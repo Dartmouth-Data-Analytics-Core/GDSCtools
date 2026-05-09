@@ -1,5 +1,7 @@
 # GDSCtools
 
+[Documentation](https://dartmouth-data-analytics-core.github.io/GDSCtools/index.html)
+
 Utility functions for downstream single-cell RNA-seq analysis, providing a
 pipeline from differential expression through GO enrichment to network
 visualization.
