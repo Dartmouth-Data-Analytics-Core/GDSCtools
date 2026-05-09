@@ -1,10 +1,14 @@
 # GDSCtools
 
-[Documentation](https://dartmouth-data-analytics-core.github.io/GDSCtools/index.html)
+**Utilities for Genomic Data Science**
 
-Utility functions for downstream single-cell RNA-seq analysis, providing a
-pipeline from differential expression through GO enrichment to network
-visualization.
+ ![Version](https://img.shields.io/badge/version-0.1.0-blue)
+  [![pkgdown documentation](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://dartmouth-data-analytics-core.github.io/GDSCtools/index.html)
+ ![License: MIT](https://img.shields.io/badge/License-GPLv3-blue.svg)
+
+> [!WARNING]
+> **🚧 In development:**  
+> This package currently supports single-cell differential expression analysis, ORA analysis, and pathway network analysis.
 
 ## Installation
 
@@ -94,6 +98,14 @@ net_results <- run_comparison_networks(
   comp_label  = "Car_vs_Bleo",
   base_outdir = "results/"
 )
+
+# 3b. Extract the GO results with clustering
+for (i in names(net_results)) {
+  x <- net_results[[i]]$go_term_df
+  cluster <- gsub("/", "_", i)
+  name <- paste0(cluster, "_cluster_membership.csv")
+  write.csv(x, file = paste0(outputDir, "CD206_Car_vs_Bleo/networks/", name))
+}
 
 # 4. Word clouds
 write_cluster_wordclouds_patchwork(
