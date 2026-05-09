@@ -1,0 +1,36 @@
+Package: GDSCtools
+Title: Genomic Data Science Utilities for the Genomic Data Science Core
+Version: 0.1.0
+Authors@R: c(
+    person("Mike", "Martinez", email = "mike.j.martinez99@gmail.com",
+           role = c("aut", "cre")),
+    person("Owen", "Wilkins", email = "owen.michael.wilkins@dartmouth.edu",
+           role = c("aut", "cre"))
+    )
+Description: Utility functions for downstream single-cell RNA-seq analysis,
+    including cluster-specific differential expression testing via Seurat,
+    Gene Ontology over-representation analysis via clusterProfiler, Jaccard-
+    overlap network construction with Leiden community detection via igraph,
+    and word cloud visualization of network cluster themes via ggwordcloud.
+    Designed for use with 10x Genomics Flex datasets processed through the
+    Seurat pipeline.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.1.0)
+Imports:
+    clusterProfiler,
+    dplyr,
+    ggplot2,
+    ggwordcloud,
+    igraph,
+    patchwork,
+    scales,
+    Seurat,
+    stringr
+Suggests:
+    org.Mm.eg.db,
+    org.Hs.eg.db,
+    testthat (>= 3.0.0)

@@ -1,0 +1,17 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/GDSCtools-package.html</loc></url>
+<url><loc>/reference/build_network_inputs.html</loc></url>
+<url><loc>/reference/generate_overlap_network.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/run_cluster_de.html</loc></url>
+<url><loc>/reference/run_comparison_networks.html</loc></url>
+<url><loc>/reference/run_go_ora.html</loc></url>
+<url><loc>/reference/write_cluster_results.html</loc></url>
+<url><loc>/reference/write_cluster_wordclouds_patchwork.html</loc></url>
+<url><loc>/reference/write_de_results.html</loc></url>
+</urlset>
+
