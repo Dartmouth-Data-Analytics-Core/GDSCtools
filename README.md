@@ -7,11 +7,8 @@ visualization.
 ## Installation
 
 ```r
-# Install from local source
-install.packages("path/to/GDSC_Utils", repos = NULL, type = "source")
-
-# Or with devtools
-devtools::install_local("path/to/GDSC_Utils")
+# Install from github
+devtools::install_github("https://github.com/Dartmouth-Data-Analytics-Core/GDSCtools")
 ```
 
 ## Dependencies
