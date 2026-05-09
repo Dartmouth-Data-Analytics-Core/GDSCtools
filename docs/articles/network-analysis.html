@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>network-analysis • GDSCtools</title>
+<title>GO-ORA Network Analysis Workflow • GDSCtools</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="network-analysis">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="GO-ORA Network Analysis Workflow">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -33,7 +33,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/network-analysis.html">network-analysis</a></li>
+<li><a class="dropdown-item" href="../articles/network-analysis.html">GO-ORA Network Analysis Workflow</a></li>
   </ul>
 </li>
       </ul>
@@ -54,7 +54,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>network-analysis</h1>
+      <h1>GO-ORA Network Analysis Workflow</h1>
             
       
 
@@ -63,10 +63,194 @@
 
     
     
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>This vignette demonstrates a typical workflow for differential
+expression, GO over-representation analysis (GO-ORA), pathway overlap
+network generation, and pathway module interpretation using
+<code>GDSCtools</code>.</p>
+<p>The workflow includes:</p>
+<ol style="list-style-type: decimal">
+<li>Differential expression analysis</li>
+<li>GO enrichment analysis</li>
+<li>Pathway overlap network construction</li>
+<li>Leiden clustering of GO pathways</li>
+<li>Word cloud generation</li>
+<li>Extraction of biologically related GO modules</li>
+</ol>
+</div>
+<div class="section level2">
+<h2 id="load-packages">Load Packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GDSCtools</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
-  </main>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">org.Mm.eg.db</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="input-data">Input Data<a class="anchor" aria-label="anchor" href="#input-data"></a>
+</h2>
+<p>This workflow assumes a Seurat object named <code>seurat_obj</code>
+containing single-cell RNA-seq data.</p>
+<p>The identities being compared in this example are:</p>
+<ul>
+<li><code>Car</code></li>
+<li><code>Bleo</code></li>
+</ul>
+<p>across selected fibroblast clusters.</p>
+</div>
+<div class="section level2">
+<h2 id="differential-expression-analysis">Differential Expression Analysis<a class="anchor" aria-label="anchor" href="#differential-expression-analysis"></a>
+</h2>
+<p>Run differential expression analysis across selected clusters.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">de_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_cluster_de.html">run_cluster_de</a></span><span class="op">(</span></span>
+<span>  obj        <span class="op">=</span> <span class="va">seurat_obj</span>,</span>
+<span>  clusters   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fibroblast 1"</span>, <span class="st">"Fibroblast 2"</span><span class="op">)</span>,</span>
+<span>  ident1     <span class="op">=</span> <span class="st">"Car"</span>,</span>
+<span>  ident2     <span class="op">=</span> <span class="st">"Bleo"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Write differential expression results to disk.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/write_de_results.html">write_de_results</a></span><span class="op">(</span></span>
+<span>  <span class="va">de_results</span>,</span>
+<span>  outSubDir <span class="op">=</span> <span class="st">"results/DE/"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"DE"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="go-over-representation-analysis">GO Over-Representation Analysis<a class="anchor" aria-label="anchor" href="#go-over-representation-analysis"></a>
+</h2>
+<p>Define the gene universe.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">universe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">seurat_obj</span><span class="op">)</span></span></code></pre></div>
+<p>Run GO enrichment analysis using Biological Process ontology.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">go_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_go_ora.html">run_go_ora</a></span><span class="op">(</span></span>
+<span>  de_list   <span class="op">=</span> <span class="va">de_results</span>,</span>
+<span>  org_db    <span class="op">=</span> <span class="va">org.Mm.eg.db</span>,</span>
+<span>  universe  <span class="op">=</span> <span class="va">universe</span>,</span>
+<span>  ont       <span class="op">=</span> <span class="st">"BP"</span>,</span>
+<span>  outputDir <span class="op">=</span> <span class="st">"results/GO/"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Export GO enrichment results.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/write_de_results.html">write_de_results</a></span><span class="op">(</span></span>
+<span>  <span class="va">go_results</span>,</span>
+<span>  outSubDir <span class="op">=</span> <span class="st">"results/GO/"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"GO"</span>,</span>
+<span>  split_direction <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="pathway-overlap-network-analysis">Pathway Overlap Network Analysis<a class="anchor" aria-label="anchor" href="#pathway-overlap-network-analysis"></a>
+</h2>
+<p>Generate pathway overlap networks from GO enrichment results.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">net_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_comparison_networks.html">run_comparison_networks</a></span><span class="op">(</span></span>
+<span>  go_list     <span class="op">=</span> <span class="va">go_results</span>,</span>
+<span>  de_list     <span class="op">=</span> <span class="va">de_results</span>,</span>
+<span>  comp_label  <span class="op">=</span> <span class="st">"Car_vs_Bleo"</span>,</span>
+<span>  base_outdir <span class="op">=</span> <span class="st">"results/"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>The resulting networks:</p>
+<ul>
+<li>represent GO terms as nodes,</li>
+<li>connect pathways sharing DE genes,</li>
+<li>cluster pathways using Leiden community detection,</li>
+<li>and identify higher-order biological programs.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="export-go-cluster-membership">Export GO Cluster Membership<a class="anchor" aria-label="anchor" href="#export-go-cluster-membership"></a>
+</h2>
+<p>Export GO terms and their associated Leiden clusters.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">net_results</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">net_results</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">go_term_df</span></span>
+<span></span>
+<span>  <span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"/"</span>, <span class="st">"_"</span>, <span class="va">i</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">cluster</span>, <span class="st">"_cluster_membership.csv"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span></span>
+<span>    <span class="va">x</span>,</span>
+<span>    file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>      <span class="va">outputDir</span>,</span>
+<span>      <span class="st">"CD206_Car_vs_Bleo/networks/"</span>,</span>
+<span>      <span class="va">name</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="generate-word-clouds">Generate Word Clouds<a class="anchor" aria-label="anchor" href="#generate-word-clouds"></a>
+</h2>
+<p>Generate cluster-specific pathway word clouds.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/write_cluster_wordclouds_patchwork.html">write_cluster_wordclouds_patchwork</a></span><span class="op">(</span></span>
+<span>  net_list   <span class="op">=</span> <span class="va">net_results</span>,</span>
+<span>  outputDir  <span class="op">=</span> <span class="st">"results/"</span>,</span>
+<span>  comparison <span class="op">=</span> <span class="st">"Car_vs_Bleo"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>These word clouds summarize dominant biological themes within each
+Leiden pathway module.</p>
+</div>
+<div class="section level2">
+<h2 id="inspect-a-specific-biological-module">Inspect a Specific Biological Module<a class="anchor" aria-label="anchor" href="#inspect-a-specific-biological-module"></a>
+</h2>
+<p>Extract all GO terms belonging to the same Leiden cluster as a target
+GO term.</p>
+<p>For example, the extracellular matrix organization module:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ecm_terms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_cluster_results.html">write_cluster_results</a></span><span class="op">(</span></span>
+<span>  net_result <span class="op">=</span> <span class="va">net_results</span><span class="op">[[</span><span class="st">"Fibroblast_1"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  go_term    <span class="op">=</span> <span class="st">"extracellular matrix organization"</span>,</span>
+<span>  outdir     <span class="op">=</span> <span class="st">"results/Car_vs_Bleo/networks/"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>This can help identify coordinated biological programs such as:</p>
+<ul>
+<li>fibrosis,</li>
+<li>inflammatory signaling,</li>
+<li>chemotaxis,</li>
+<li>interferon response,</li>
+<li>or metabolic remodeling.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="session-information">Session Information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+</h2>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
+<span><span class="co">#&gt; Platform: aarch64-apple-darwin20</span></span>
+<span><span class="co">#&gt; Running under: macOS Sonoma 14.6</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib </span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: America/New_York</span></span>
+<span><span class="co">#&gt; tzcode source: internal</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;  [1] digest_0.6.37     desc_1.4.3        R6_2.6.1          fastmap_1.2.0    </span></span>
+<span><span class="co">#&gt;  [5] xfun_0.53         cachem_1.1.0      knitr_1.50        htmltools_0.5.8.1</span></span>
+<span><span class="co">#&gt;  [9] rmarkdown_2.29    lifecycle_1.0.4   cli_3.6.5         sass_0.4.10      </span></span>
+<span><span class="co">#&gt; [13] pkgdown_2.1.3     textshaping_1.0.3 jquerylib_0.1.4   systemfonts_1.3.1</span></span>
+<span><span class="co">#&gt; [17] compiler_4.4.1    rstudioapi_0.17.1 tools_4.4.1       ragg_1.5.0       </span></span>
+<span><span class="co">#&gt; [21] bslib_0.9.0       evaluate_1.0.5    yaml_2.3.10       jsonlite_2.0.0   </span></span>
+<span><span class="co">#&gt; [25] rlang_1.1.6       fs_1.6.6          htmlwidgets_1.6.4</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

@@ -1,19 +1,193 @@
 ---
-title: "network-analysis"
+title: "GO-ORA Network Analysis Workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{network-analysis}
+  %\VignetteIndexEntry{GO-ORA Network Analysis Workflow}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6
 )
 ```
 
-```{r setup}
+# Introduction
+
+This vignette demonstrates a typical workflow for differential expression,
+GO over-representation analysis (GO-ORA), pathway overlap network generation,
+and pathway module interpretation using `GDSCtools`.
+
+The workflow includes:
+
+1. Differential expression analysis
+2. GO enrichment analysis
+3. Pathway overlap network construction
+4. Leiden clustering of GO pathways
+5. Word cloud generation
+6. Extraction of biologically related GO modules
+
+# Load Packages
+
+```{r eval = FALSE}
 library(GDSCtools)
+library(org.Mm.eg.db)
+```
+
+# Input Data
+
+This workflow assumes a Seurat object named `seurat_obj`
+containing single-cell RNA-seq data.
+
+The identities being compared in this example are:
+
+- `Car`
+- `Bleo`
+
+across selected fibroblast clusters.
+
+# Differential Expression Analysis
+
+Run differential expression analysis across selected clusters.
+
+```{r eval = FALSE}
+de_results <- run_cluster_de(
+  obj        = seurat_obj,
+  clusters   = c("Fibroblast 1", "Fibroblast 2"),
+  ident1     = "Car",
+  ident2     = "Bleo"
+)
+```
+
+Write differential expression results to disk.
+
+```{r eval = FALSE}
+write_de_results(
+  de_results,
+  outSubDir = "results/DE/",
+  type = "DE"
+)
+```
+
+# GO Over-Representation Analysis
+
+Define the gene universe.
+
+```{r eval = FALSE}
+universe <- rownames(seurat_obj)
+```
+
+Run GO enrichment analysis using Biological Process ontology.
+
+```{r eval = FALSE}
+go_results <- run_go_ora(
+  de_list   = de_results,
+  org_db    = org.Mm.eg.db,
+  universe  = universe,
+  ont       = "BP",
+  outputDir = "results/GO/"
+)
+```
+
+Export GO enrichment results.
+
+```{r eval = FALSE}
+write_de_results(
+  go_results,
+  outSubDir = "results/GO/",
+  type = "GO",
+  split_direction = FALSE
+)
+```
+
+# Pathway Overlap Network Analysis
+
+Generate pathway overlap networks from GO enrichment results.
+
+```{r eval = FALSE}
+net_results <- run_comparison_networks(
+  go_list     = go_results,
+  de_list     = de_results,
+  comp_label  = "Car_vs_Bleo",
+  base_outdir = "results/"
+)
+```
+
+The resulting networks:
+
+- represent GO terms as nodes,
+- connect pathways sharing DE genes,
+- cluster pathways using Leiden community detection,
+- and identify higher-order biological programs.
+
+# Export GO Cluster Membership
+
+Export GO terms and their associated Leiden clusters.
+
+```{r eval = FALSE}
+for (i in names(net_results)) {
+
+  x <- net_results[[i]]$go_term_df
+
+  cluster <- gsub("/", "_", i)
+
+  name <- paste0(cluster, "_cluster_membership.csv")
+
+  write.csv(
+    x,
+    file = paste0(
+      outputDir,
+      "CD206_Car_vs_Bleo/networks/",
+      name
+    )
+  )
+}
+```
+
+# Generate Word Clouds
+
+Generate cluster-specific pathway word clouds.
+
+```{r eval = FALSE}
+write_cluster_wordclouds_patchwork(
+  net_list   = net_results,
+  outputDir  = "results/",
+  comparison = "Car_vs_Bleo"
+)
+```
+
+These word clouds summarize dominant biological themes
+within each Leiden pathway module.
+
+# Inspect a Specific Biological Module
+
+Extract all GO terms belonging to the same Leiden cluster
+as a target GO term.
+
+For example, the extracellular matrix organization module:
+
+```{r eval = FALSE}
+ecm_terms <- write_cluster_results(
+  net_result = net_results[["Fibroblast_1"]],
+  go_term    = "extracellular matrix organization",
+  outdir     = "results/Car_vs_Bleo/networks/"
+)
+```
+
+This can help identify coordinated biological programs such as:
+
+- fibrosis,
+- inflammatory signaling,
+- chemotaxis,
+- interferon response,
+- or metabolic remodeling.
+
+# Session Information
+
+```{r}
+sessionInfo()
 ```
