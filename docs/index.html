@@ -53,8 +53,8 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="gdsctools">GDSCtools<a class="anchor" aria-label="anchor" href="#gdsctools"></a>
 </h1></div>
-<p><strong>Utilities for Genomic Data Science</strong></p>
-<p><img src="https://img.shields.io/badge/version-0.1.0-blue" alt="Version"><a href="https://dartmouth-data-analytics-core.github.io/GDSCtools/index.html" class="external-link"><img src="https://img.shields.io/badge/docs-pkgdown-blue.svg" alt="pkgdown documentation"></a> <img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: MIT"></p>
+<p><strong>Dartmouth Genomic Data Science Core: General Utilities</strong></p>
+<p><img src="https://img.shields.io/badge/version-0.1.0-blue" alt="Version"><a href="https://dartmouth-data-analytics-core.github.io/GDSCtools/index.html" class="external-link"><img src="https://img.shields.io/badge/docs-pkgdown-blue.svg" alt="pkgdown documentation"></a> <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></p>
 <blockquote>
 <p>[!WARNING] <strong>🚧 In development:</strong><br>
 This package currently supports single-cell differential expression analysis, ORA analysis, and pathway network analysis.</p>
@@ -78,214 +78,9 @@ This package currently supports single-cell differential expression analysis, OR
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clusterProfiler"</span>, <span class="st">"org.Mm.eg.db"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
+<h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
 </h2>
-<div class="section level3">
-<h3 id="differential-expression">Differential Expression<a class="anchor" aria-label="anchor" href="#differential-expression"></a>
-</h3>
-<table class="table">
-<colgroup>
-<col width="50%">
-<col width="50%">
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code><a href="reference/run_cluster_de.html">run_cluster_de()</a></code></td>
-<td>Cluster-specific DE via <code><a href="https://satijalab.org/seurat/reference/FindMarkers.html" class="external-link">Seurat::FindMarkers</a></code> with fold-change and p-value filtering</td>
-</tr>
-<tr>
-<td><code><a href="reference/write_de_results.html">write_de_results()</a></code></td>
-<td>Export DE or GO result lists to per-cluster CSV files</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="go-enrichment">GO Enrichment<a class="anchor" aria-label="anchor" href="#go-enrichment"></a>
-</h3>
-<table class="table">
-<colgroup>
-<col width="50%">
-<col width="50%">
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Description</th>
-</tr></thead>
-<tbody><tr>
-<td><code><a href="reference/run_go_ora.html">run_go_ora()</a></code></td>
-<td>GO over-representation analysis per cluster via <code><a href="https://rdrr.io/pkg/clusterProfiler/man/enrichGO.html" class="external-link">clusterProfiler::enrichGO</a></code> with QC summary</td>
-</tr></tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="network-analysis">Network Analysis<a class="anchor" aria-label="anchor" href="#network-analysis"></a>
-</h3>
-<table class="table">
-<colgroup>
-<col width="50%">
-<col width="50%">
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code><a href="reference/run_comparison_networks.html">run_comparison_networks()</a></code></td>
-<td>Top-level driver: build overlap networks for all clusters in a comparison</td>
-</tr>
-<tr>
-<td><code><a href="reference/build_network_inputs.html">build_network_inputs()</a></code></td>
-<td>Extract significant GO terms and pair with fold-change data</td>
-</tr>
-<tr>
-<td><code><a href="reference/generate_overlap_network.html">generate_overlap_network()</a></code></td>
-<td>Build Jaccard-overlap network, Leiden clustering, plots and CSV export</td>
-</tr>
-<tr>
-<td><code><a href="reference/write_cluster_results.html">write_cluster_results()</a></code></td>
-<td>Extract all GO terms from a specific Leiden cluster</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
-</h3>
-<table class="table">
-<colgroup>
-<col width="50%">
-<col width="50%">
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Description</th>
-</tr></thead>
-<tbody><tr>
-<td><code><a href="reference/write_cluster_wordclouds_patchwork.html">write_cluster_wordclouds_patchwork()</a></code></td>
-<td>Multi-panel word clouds summarizing GO term themes per Leiden cluster</td>
-</tr></tbody>
-</table>
-</div>
-</div>
-<div class="section level2">
-<h2 id="typical-workflow">Typical Workflow<a class="anchor" aria-label="anchor" href="#typical-workflow"></a>
-</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GDSCUtils</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">org.Mm.eg.db</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 1. Differential expression</span></span>
-<span><span class="va">de_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_cluster_de.html">run_cluster_de</a></span><span class="op">(</span></span>
-<span>  obj        <span class="op">=</span> <span class="va">seurat_obj</span>,</span>
-<span>  clusters   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fibroblast 1"</span>, <span class="st">"Fibroblast 2"</span><span class="op">)</span>,</span>
-<span>  ident1     <span class="op">=</span> <span class="st">"Car"</span>,</span>
-<span>  ident2     <span class="op">=</span> <span class="st">"Bleo"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/write_de_results.html">write_de_results</a></span><span class="op">(</span><span class="va">de_results</span>, outSubDir <span class="op">=</span> <span class="st">"results/DE/"</span>, type <span class="op">=</span> <span class="st">"DE"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 2. GO enrichment</span></span>
-<span><span class="va">universe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">seurat_obj</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">go_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_go_ora.html">run_go_ora</a></span><span class="op">(</span></span>
-<span>  de_list   <span class="op">=</span> <span class="va">de_results</span>,</span>
-<span>  org_db    <span class="op">=</span> <span class="va">org.Mm.eg.db</span>,</span>
-<span>  universe  <span class="op">=</span> <span class="va">universe</span>,</span>
-<span>  ont       <span class="op">=</span> <span class="st">"BP"</span>,</span>
-<span>  outputDir <span class="op">=</span> <span class="st">"results/GO/"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/write_de_results.html">write_de_results</a></span><span class="op">(</span><span class="va">go_results</span>, outSubDir <span class="op">=</span> <span class="st">"results/GO/"</span>, type <span class="op">=</span> <span class="st">"GO"</span>,</span>
-<span>                 split_direction <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 3. Network analysis</span></span>
-<span><span class="va">net_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_comparison_networks.html">run_comparison_networks</a></span><span class="op">(</span></span>
-<span>  go_list     <span class="op">=</span> <span class="va">go_results</span>,</span>
-<span>  de_list     <span class="op">=</span> <span class="va">de_results</span>,</span>
-<span>  comp_label  <span class="op">=</span> <span class="st">"Car_vs_Bleo"</span>,</span>
-<span>  base_outdir <span class="op">=</span> <span class="st">"results/"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 3b. Extract the GO results with clustering</span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">net_results</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">net_results</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">go_term_df</span></span>
-<span>  <span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"/"</span>, <span class="st">"_"</span>, <span class="va">i</span><span class="op">)</span></span>
-<span>  <span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">cluster</span>, <span class="st">"_cluster_membership.csv"</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">x</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">outputDir</span>, <span class="st">"CD206_Car_vs_Bleo/networks/"</span>, <span class="va">name</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># 4. Word clouds</span></span>
-<span><span class="fu"><a href="reference/write_cluster_wordclouds_patchwork.html">write_cluster_wordclouds_patchwork</a></span><span class="op">(</span></span>
-<span>  net_list   <span class="op">=</span> <span class="va">net_results</span>,</span>
-<span>  outputDir  <span class="op">=</span> <span class="st">"results/"</span>,</span>
-<span>  comparison <span class="op">=</span> <span class="st">"Car_vs_Bleo"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 5. Inspect a specific cluster</span></span>
-<span><span class="va">ecm_terms</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/write_cluster_results.html">write_cluster_results</a></span><span class="op">(</span></span>
-<span>  net_result <span class="op">=</span> <span class="va">net_results</span><span class="op">[[</span><span class="st">"Fibroblast_1"</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  go_term    <span class="op">=</span> <span class="st">"extracellular matrix organization"</span>,</span>
-<span>  outdir     <span class="op">=</span> <span class="st">"results/Car_vs_Bleo/networks/"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="key-parameters">Key Parameters<a class="anchor" aria-label="anchor" href="#key-parameters"></a>
-</h2>
-<table class="table">
-<colgroup>
-<col width="33%">
-<col width="33%">
-<col width="33%">
-</colgroup>
-<thead><tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code>overlap_threshold</code></td>
-<td>0.1</td>
-<td>Minimum Jaccard overlap to draw a network edge</td>
-</tr>
-<tr>
-<td><code>leiden_resolution</code></td>
-<td>0.03</td>
-<td>Leiden clustering resolution (lower = fewer clusters)</td>
-</tr>
-<tr>
-<td><code>merge_similarity</code></td>
-<td>0.6</td>
-<td>Word-level Jaccard threshold for merging redundant GO labels</td>
-</tr>
-<tr>
-<td><code>padj_thresh</code></td>
-<td>0.05</td>
-<td>Adjusted p-value cutoff for DE filtering</td>
-</tr>
-<tr>
-<td><code>logfc_thresh</code></td>
-<td>0.5</td>
-<td>Minimum absolute log2FC for DE filtering</td>
-</tr>
-<tr>
-<td><code>min_terms</code></td>
-<td>5</td>
-<td>Minimum phrases to render a word cloud panel</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level2">
-<h2 id="attribution">Attribution<a class="anchor" aria-label="anchor" href="#attribution"></a>
-</h2>
-<p>Network analysis approach adapted from <code>pathway-analysis.R</code> by Owen Wilkins.</p>
+<p><a href="https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/network-analysis.html" class="external-link">Pathway Network Analysis</a></p>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
@@ -313,7 +108,7 @@ This package currently supports single-cell differential expression analysis, OR
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Mike Martinez <br><small class="roles"> Maintainer </small>   </li>
+<li>Mike Martinez <br><small class="roles"> Author, maintainer </small>   </li>
 <li>Owen Wilkins <br><small class="roles"> Author </small>   </li>
 </ul>
 </div>

@@ -3,7 +3,7 @@ Title: Genomic Data Science Utilities for the Genomic Data Science Core
 Version: 0.1.0
 Authors@R: c(
     person("Mike", "Martinez", email = "mike.j.martinez99@gmail.com",
-           role = c("aut", cre")),
+           role = c("aut", "cre")),
     person("Owen", "Wilkins", email = "owen.michael.wilkins@dartmouth.edu",
            role = c("aut"))
     )
