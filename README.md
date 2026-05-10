@@ -35,12 +35,6 @@ BiocManager::install(c("clusterProfiler", "org.Mm.eg.db"))
 
 [Pathway Network Analysis](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/network-analysis.html)
 
-
-## Attribution
-
-The Genomic Data Science Core at Dartmouth
-
-
 ## License
 
 MIT
