@@ -8,7 +8,7 @@
 
 > [!WARNING]
 > **🚧 In development:**  
-> This package currently supports single-cell differential expression analysis, ORA analysis, and pathway network analysis.
+> This package currently supports basic single-cell quality control, differential expression analysis, ORA analysis, and pathway network analysis. More functionalities and utilities will be added, stay tuned!
 
 ## Installation
 
@@ -33,6 +33,8 @@ BiocManager::install(c("clusterProfiler", "org.Mm.eg.db"))
 
 ## Vignettes
 
+[Loading `CellRanger` outputs as Seurat Objects](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/Loading-Data.html)  
+[Basic Single Cell GEX Quality Control](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/single-cell-gex-qc.html)
 [Pathway Network Analysis](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/network-analysis.html)
 
 ## License
