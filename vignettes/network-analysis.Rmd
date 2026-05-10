@@ -58,6 +58,7 @@ Run differential expression analysis across selected clusters.
 de_results <- run_cluster_de(
   obj        = seurat_obj,
   clusters   = c("Fibroblast 1", "Fibroblast 2"),
+  cluster_col = "final_celltypes",
   ident1     = "Car",
   ident2     = "Bleo"
 )
@@ -69,7 +70,8 @@ Write differential expression results to disk.
 write_de_results(
   de_results,
   outSubDir = "results/DE/",
-  type = "DE"
+  type = "DE",
+  split_direction = FALSE
 )
 ```
 
@@ -81,7 +83,7 @@ Define the gene universe.
 universe <- rownames(seurat_obj)
 ```
 
-Run GO enrichment analysis using Biological Process ontology.
+Run GO enrichment analysis using Biological Process ontology and save results.
 
 ```{r eval = FALSE}
 go_results <- run_go_ora(
@@ -91,6 +93,7 @@ go_results <- run_go_ora(
   ont       = "BP",
   outputDir = "results/GO/"
 )
+
 ```
 
 Export GO enrichment results.
@@ -106,7 +109,7 @@ write_de_results(
 
 # Pathway Overlap Network Analysis
 
-Generate pathway overlap networks from GO enrichment results.
+Generate pathway overlap networks from GO enrichment results. This function will automatically generate a folder called "network/" in your `base_outdir`
 
 ```{r eval = FALSE}
 net_results <- run_comparison_networks(
@@ -126,7 +129,7 @@ The resulting networks:
 
 # Export GO Cluster Membership
 
-Export GO terms and their associated Leiden clusters.
+Export GO terms and their associated Leiden clusters. This is not baked into the function above yet.
 
 ```{r eval = FALSE}
 for (i in names(net_results)) {
@@ -178,13 +181,7 @@ ecm_terms <- write_cluster_results(
 )
 ```
 
-This can help identify coordinated biological programs such as:
-
-- fibrosis,
-- inflammatory signaling,
-- chemotaxis,
-- interferon response,
-- or metabolic remodeling.
+This can help identify coordinated biological programs.
 
 # Session Information
 
