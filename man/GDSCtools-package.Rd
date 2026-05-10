@@ -11,9 +11,9 @@ Utility functions for downstream single-cell RNA-seq analysis, including cluster
 \author{
 \strong{Maintainer}: Mike Martinez \email{mike.j.martinez99@gmail.com}
 
-Other contributors:
+Authors:
 \itemize{
-  \item Owen Wilkins (Original pathway-analysis.R network approach) [contributor]
+  \item Owen Wilkins \email{owen.michael.wilkins@dartmouth.edu}
 }
 
 }

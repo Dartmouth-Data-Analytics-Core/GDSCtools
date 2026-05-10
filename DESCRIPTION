@@ -33,4 +33,7 @@ Imports:
 Suggests:
     org.Mm.eg.db,
     org.Hs.eg.db,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
