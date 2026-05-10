@@ -20,7 +20,7 @@ devtools::install_github("https://github.com/Dartmouth-Data-Analytics-Core/GDSCt
 
 ## Dependencies
 
-**CRAN:** igraph, dplyr, ggplot2, ggwordcloud, patchwork, scales, stringr
+**CRAN:** igraph, dplyr, ggplot2, ggwordcloud, patchwork, scales, stringr, purrr, ggExtra
 
 **Bioconductor:** Seurat, clusterProfiler, org.Mm.eg.db (or org.Hs.eg.db)
 
