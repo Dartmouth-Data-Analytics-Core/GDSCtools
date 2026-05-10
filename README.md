@@ -34,9 +34,9 @@ BiocManager::install(c("clusterProfiler", "org.Mm.eg.db"))
 
 ## Vignettes
 
-[Loading `CellRanger` outputs as Seurat Objects](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/Loading-Data.html)  
-[Basic Single Cell GEX Quality Control](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/single-cell-gex-qc.html)
-[Pathway Network Analysis](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/network-analysis.html)
+- [Loading CellRanger outputs as Seurat Objects](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/Loading-Data.html)  
+- [Basic Single Cell GEX Quality Control](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/single-cell-gex-qc.html)  
+- [Pathway Network Analysis](https://dartmouth-data-analytics-core.github.io/GDSCtools/articles/network-analysis.html)
 
 ## License
 
